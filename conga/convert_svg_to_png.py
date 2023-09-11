@@ -3,6 +3,7 @@ from os import system
 from os.path import isfile
 from sys import stderr, exit
 from shutil import which
+from collections import OrderedDict
 
 # modify this (ie PATH_TO_INKSCAPE) if you have command line inkscape installed
 #   in a different place
@@ -48,7 +49,7 @@ def convert_with_inkscape(svgfile, pngfile):
 
         if isfile( pngfile ):
             ## success
-            return
+            return True
         else:
             print(f'conga.convert_svg_to_png: inkscape failed, command="{cmd}"')
 
@@ -76,7 +77,7 @@ def convert_with_inkscape(svgfile, pngfile):
 
         if isfile( pngfile ):
             ## success
-            return
+            return True
 
         # this is the old syntax
         cmd = '{} --export-png {} {}'.format( PATH_TO_INKSCAPE, pngfile_full, svgfile_full )
@@ -118,7 +119,7 @@ def convert_with_cairosvg(svgfile, pngfile):
 
         if isfile( pngfile ):
             ## success
-            return
+            return True
         else:
             print(f'conga.convert_svg_to_png: 3rd try failed, command="{cmd}"')
 
@@ -136,19 +137,19 @@ def convert_with_magick(svgfile, pngfile):
 
         if isfile( pngfile ):
             ## success
-            return
+            return True
         else:
             print(f'conga.convert_svg_to_png: 4th try failed, command="{cmd}"')
 
     return False
 
-CONVERT_MAP = {
-    'convert': convert_with_convert,
-    'inkscape': convert_with_inkscape,
-    'rsvg': convert_with_rsvg,
-    'cairosvg': convert_with_cairosvg,
-    'magick': convert_with_magick,
-}
+CONVERT_MAP = OrderedDict([
+    ('convert', convert_with_convert),
+    ('inkscape', convert_with_inkscape),
+    ('rsvg', convert_with_rsvg),
+    ('cairosvg', convert_with_cairosvg),
+    ('magick', convert_with_magick),
+])
 
 def convert_svg_to_png(
         svgfile,
@@ -162,7 +163,7 @@ def convert_svg_to_png(
         print(errmsg)
         stderr.write( errmsg )
         if allow_missing:
-            return
+            return True
         else:
             exit()
 
