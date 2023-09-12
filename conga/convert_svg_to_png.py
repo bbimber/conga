@@ -177,10 +177,13 @@ def convert_svg_to_png(
             print(errmsg)
             stderr.write( errmsg )
             continue
-        
+
+        print('Attempting to convert svg using: ' + tool_name)
         success = CONVERT_MAP[tool_name](svgfile, pngfile)
         if success:
             return
+        else:
+            print('failed to run: ' + tool_name)
 
 
     ## this might also occur if the svgfile were empty...
