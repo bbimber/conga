@@ -406,10 +406,13 @@ def read_dataset(
         print(adata.obs.index)
         print('barcode2kpcs')
         print(barcode2kpcs.keys())
+        print('MASK')
+        print(mask)
+        
         print('INTERSECT')
-        print(sum(barcode2kpcs in adata.obs.index))
+        print(sum(barcode2kpcs.items() in adata.obs.index))
         print('NOT FOUND')
-        print(sum(barcode2kpcs not in adata.obs.index))
+        print(sum(barcode2kpcs.items() not in adata.obs.index))
         
         X_kpca = np.array( [ barcode2kpcs[x] for x in adata.obs.index ] )
         adata.obsm['X_pca_tcr'] = X_kpca
