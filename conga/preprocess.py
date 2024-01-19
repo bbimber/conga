@@ -393,27 +393,24 @@ def read_dataset(
     mask = [ x in barcode2tcr for x in adata.obs.index ]
 
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
-    #adata = adata[mask,:]
+    origSize = adata.shape[0]
+    adata2 = adata[mask,:]
+    
     adata = adata[mask,:].copy()
+    print(f'DEBUGGING! Original size: {origSize}, after mask without copy: {adata2.shape[0]}, copied version: {adata.shape[0]}')
+    if np.sum(mask) != adata.shape[0]:
+        stop('The anndata subset step did not work as expected!')
+        
     adata.uns['conga_stats']['num_cells_w_tcr'] = adata.shape[0]
 
     if np.sum(mask)==0:
         return adata # seem to get an error below; who cares anyhow?
 
     if not missing_kpca_file: # stash the kPCA info in adata.obsm
-        print('DEBUG ADATA')
-        print(adata.shape[0])
-        print(adata.obs.index)
-        print('barcode2kpcs')
-        print(barcode2kpcs.keys())
-        print('MASK')
-        print(mask)
-        
-        print('INTERSECT')
-        print(sum(barcode2kpcs.items() in adata.obs.index))
-        print('NOT FOUND')
-        print(sum(barcode2kpcs.items() not in adata.obs.index))
-        
+        print(f'DEBUGGING! Original size: {origSize}, after mask without copy: {adata2.shape[0]}, copied version: {adata.shape[0]}')
+        if np.sum(mask) != adata.shape[0]:
+            stop('The anndata subset step did not work as expected!')
+
         X_kpca = np.array( [ barcode2kpcs[x] for x in adata.obs.index ] )
         adata.obsm['X_pca_tcr'] = X_kpca
 
