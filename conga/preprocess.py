@@ -393,11 +393,13 @@ def read_dataset(
     mask = [ x in barcode2tcr for x in adata.obs.index ]
     print('MASK Info:')
     print(len(mask))
-    print(print(set(mask)))
+    print(set(mask))
 
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
     adata = adata[mask,:].copy()
     if np.sum(mask) != adata.shape[0]:
+        print(adata.obs.index)
+        print('Is_unique:')
         print(adata.obs.index.is_unique)
         exit(print(f'AnnData subset did not work as expected! Expected: {np.sum(mask)}, after subset: {adata.shape[0]}'))        
         
