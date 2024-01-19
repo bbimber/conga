@@ -398,6 +398,7 @@ def read_dataset(
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
     adata = adata[mask,:].copy()
     if np.sum(mask) != adata.shape[0]:
+        print(adata.obs.index.is_unique)
         exit(print(f'AnnData subset did not work as expected! Expected: {np.sum(mask)}, after subset: {adata.shape[0]}'))        
         
     adata.uns['conga_stats']['num_cells_w_tcr'] = adata.shape[0]
