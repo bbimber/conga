@@ -401,6 +401,16 @@ def read_dataset(
         return adata # seem to get an error below; who cares anyhow?
 
     if not missing_kpca_file: # stash the kPCA info in adata.obsm
+        print('DEBUG ADATA')
+        print(adata.shape[0])
+        print(adata.obs.index)
+        print('barcode2kpcs')
+        print(barcode2kpcs.keys())
+        print('INTERSECT')
+        print(sum(barcode2kpcs in adata.obs.index))
+        print('NOT FOUND')
+        print(sum(barcode2kpcs not in adata.obs.index))
+        
         X_kpca = np.array( [ barcode2kpcs[x] for x in adata.obs.index ] )
         adata.obsm['X_pca_tcr'] = X_kpca
 
