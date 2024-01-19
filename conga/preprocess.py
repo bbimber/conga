@@ -393,13 +393,9 @@ def read_dataset(
     mask = [ x in barcode2tcr for x in adata.obs.index ]
 
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
-    origSize = adata.shape[0]
-    adata2 = adata[mask,:]
-    
-    adata = adata[mask,:].copy()
-    print(f'DEBUGGING! Original size: {origSize}, after mask without copy: {adata2.shape[0]}, copied version: {adata.shape[0]}')
+    adata = adata[mask].copy()
     if np.sum(mask) != adata.shape[0]:
-        stop('The anndata subset step did not work as expected!')
+        exit(print(f'AnnData subset did not work as expected! Expected: {np.sum(mask)}, after subset: {adata.shape[0]}'))        
         
     adata.uns['conga_stats']['num_cells_w_tcr'] = adata.shape[0]
 
@@ -407,10 +403,6 @@ def read_dataset(
         return adata # seem to get an error below; who cares anyhow?
 
     if not missing_kpca_file: # stash the kPCA info in adata.obsm
-        print(f'DEBUGGING! Original size: {origSize}, after mask without copy: {adata2.shape[0]}, copied version: {adata.shape[0]}')
-        if np.sum(mask) != adata.shape[0]:
-            stop('The anndata subset step did not work as expected!')
-
         X_kpca = np.array( [ barcode2kpcs[x] for x in adata.obs.index ] )
         adata.obsm['X_pca_tcr'] = X_kpca
 
