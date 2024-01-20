@@ -230,6 +230,11 @@ def read_adata(
               "should be one of ['h5ad', '10x_mtx', '10x_h5', 'loom']")
         exit()
 
+    print('After load:')
+    print(adata.obs.index)
+    print('Is_unique:')
+    print(adata.obs.index.is_unique)
+    
     if adata.isview: # ran into trouble with AnnData views vs copies
         adata = adata.copy()
     return adata
@@ -391,9 +396,10 @@ def read_dataset(
             assert bc in barcodes # the barcodes list before preprocessing...
 
     mask = [ x in barcode2tcr for x in adata.obs.index ]
-    print('MASK Info:')
-    print(len(mask))
-    print(set(mask))
+    print('Before subset:')
+    print(adata.obs.index)
+    print('Is_unique:')
+    print(adata.obs.index.is_unique)
 
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
     adata = adata[mask,:].copy()
