@@ -404,10 +404,6 @@ def read_dataset(
     print(adata.obs.index.is_unique)
     print('Index length: ' + str(len(adata.obs.index)))
     print('Index unique length: ' + str(len(adata.obs.index.unique())))
-
-    print('MASK')
-    for x in mask:
-        print(x)
     
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
     adata = adata[mask,:].copy()
