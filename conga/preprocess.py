@@ -234,6 +234,8 @@ def read_adata(
     print(adata.obs.index)
     print('Is_unique:')
     print(adata.obs.index.is_unique)
+    print('Index length: ' + str(len(adata.obs.index)))
+    print('Index unique length: ' + str(len(adata.obs.index.unique())))
     
     if adata.isview: # ran into trouble with AnnData views vs copies
         adata = adata.copy()
@@ -400,6 +402,8 @@ def read_dataset(
     print(adata.obs.index)
     print('Is_unique:')
     print(adata.obs.index.is_unique)
+    print('Index length: ' + str(len(adata.obs.index)))
+    print('Index unique length: ' + str(len(adata.obs.index.unique())))
 
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
     adata = adata[mask,:].copy()
@@ -407,6 +411,9 @@ def read_dataset(
         print(adata.obs.index)
         print('Is_unique:')
         print(adata.obs.index.is_unique)
+        print('Index length: ' + str(len(adata.obs.index)))
+        print('Index unique length: ' + str(len(adata.obs.index.unique())))
+        
         exit(print(f'AnnData subset did not work as expected! Expected: {np.sum(mask)}, after subset: {adata.shape[0]}'))        
         
     adata.uns['conga_stats']['num_cells_w_tcr'] = adata.shape[0]
