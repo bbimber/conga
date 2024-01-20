@@ -397,7 +397,7 @@ def read_dataset(
                 barcode2kpcs[ bc ] = kpcs
             assert bc in barcodes # the barcodes list before preprocessing...
 
-    mask = [ x in barcode2tcr for x in adata.obs.index ]
+    mask = [ x in barcode2tcr for x in adata.obs.index ]    
     print('Before subset:')
     print(adata.obs.index)
     print('Is_unique:')
@@ -405,6 +405,10 @@ def read_dataset(
     print('Index length: ' + str(len(adata.obs.index)))
     print('Index unique length: ' + str(len(adata.obs.index.unique())))
 
+    print('MASK')
+    for x in mask:
+        print(x)
+    
     print(f'Reducing to the {np.sum(mask)} barcodes (out of {adata.shape[0]}) with paired TCR sequence data')
     adata = adata[mask,:].copy()
     if np.sum(mask) != adata.shape[0]:
